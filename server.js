@@ -12,14 +12,14 @@ const io = socketio(server, {
     }
 }); 
 
-
+ 
 // Database
 const db = require('./config/database');
 
 
 // Testing Connection
 db.authenticate()
-.then(() => console.log('database is connected'))
+.then(() => console.log('connected to database..'))
 .catch(err => console.log('there is an error:' + err))
 
 
@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 
 // Project routes
 app.use('/projects', require('./routes/projects'))
+app.use('/tickets', require('./routes/tickets'))
 
 
 

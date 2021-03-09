@@ -7,7 +7,8 @@ const Project = require('../models/Project');
 // Get list of all projects
 router.get('/', (req, res) => Project.findAll()
     .then(projects => {
-        console.log(projects)
+        // console.log(projects)
+        res.json(projects)
         res.sendStatus(200)
     })
     .catch(err => console.log(err))
@@ -15,10 +16,14 @@ router.get('/', (req, res) => Project.findAll()
 
     
 // Add a project
-router.get('/add', (req, res) => {
+router.post('/add', (req, res) => {
+    // const data = {
+    //     title: 'Another Test Project',
+    //     description: 'this is the second test'
+    // }
     const data = {
-        title: 'Test Project',
-        description: 'this is a test'
+        title: req.title,
+        description: req.description
     }
 
     // let { title, description } = data;
