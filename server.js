@@ -16,7 +16,7 @@ const io = socketio(server, {
 // Database
 const db = require('./config/database');
 
-
+ 
 // Testing Connection
 db.authenticate()
 .then(() => console.log('connected to database..'))

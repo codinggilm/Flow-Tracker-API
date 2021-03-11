@@ -9,12 +9,28 @@ router.get('/', (req, res) => Project.findAll()
     .then(projects => {
         // console.log(projects)
         res.json(projects)
+        console.log(projects)
         // res.sendStatus(200)
     })
     .catch(err => console.log(err))
 );
 
-//Get 
+// Get specific project
+// router.post('/', (req, res) => {
+//     console.log(req.body.id)
+// })
+
+router.post('/', (req, res) => Project.findAll({
+        where: {
+            id: req.body.id
+        }
+    })
+    .then(project => {
+        res.json(project)
+        console.log(project)
+    })
+    .catch(err => console.log(err))
+);
     
 // Add a project
 router.post('/', (req, res) => {
