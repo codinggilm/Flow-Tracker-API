@@ -7,42 +7,40 @@ const Ticket = require('../models/Ticket');
 // Get list of all tickets
 router.get('/', (req, res) => Ticket.findAll()
     .then(tickets => {
-        console.log(tickets)
-        res.sendStatus(200)
+        // console.log(tickets)
+        res.json(tickets)
     })
     .catch(err => console.log(err))
 );
 
-    
-// Add a project
-router.get('/add', (req, res) => {
-    const data = {
-        title: 'My first ticket',
-        description: 'this is a test ticket',
-        project: 'project 1',
-        developer: 'Kirk Hammet',
-        priority: 'low',
-        status: 'open',
-        type: 'bug',
-        submitter: 'Cliff Burton',
-        comment: 'this should work',
-    }
 
+// Fetch specific ticket
+
+    
+// Add a ticket
+router.post('/', (req, res) => {
     // let { title, description } = data;
 
     Ticket.create({
-        title: data.title,
-        description: data.description,
-        project: data.project,
-        developer: data.developer,
-        priority: data.priority,
-        status: data.status,
-        type: data.type,
-        submitter: data.submitter,
-        comment: data.comment
+        title: req.body.title,
+        description: req.body.description,
+        project: req.body.project,
+        projectId: req.body.projectId,
+        developer: req.body.developer,
+        priority: req.body.priority,
+        status: req.body.status,
+        type: req.body.type,
+        submitter: req.body.submitter,
+        comment: req.body.comment
     })
-    .then(project => res.redirect('/tickets'))
+    // .then(project => res.redirect('/tickets'))
+    .then(res.json('added a new ticket successfully'))
     .catch(err => console.log(err))
+});
+
+
+router.post('/add', (req, res) => {
+console.log(req.body)
 });
     
     

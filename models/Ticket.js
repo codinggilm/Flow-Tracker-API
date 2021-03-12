@@ -8,6 +8,9 @@ const Ticket = db.define('ticket', {
     project: {
         type: Sequelize.STRING
     },
+    projectId: {
+        type: Sequelize.STRING
+    },
     developer: {
         type: Sequelize.STRING
     },
