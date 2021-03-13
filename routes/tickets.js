@@ -15,11 +15,22 @@ router.get('/', (req, res) => Ticket.findAll()
 
 
 // Fetch specific ticket
+router.post('/', (req, res) => Ticket.findAll({
+        where: {
+            id: req.body.id
+        }
+    })  
+    .then(ticket => {
+        console.log(ticket)
+        res.json(ticket)
+    })
+    .catch(err => console.log(err))
+);
 
     
 // Add a ticket
 router.post('/', (req, res) => {
-    // let { title, description } = data;
+    console.log(req.body)
 
     Ticket.create({
         title: req.body.title,

@@ -16,7 +16,7 @@ router.get('/', (req, res) => Project.findAll()
 );
 
 // Fetch specific project
-router.post('/', (req, res) => Project.findAll({
+router.get('/', (req, res) => Project.findAll({
         where: {
             id: req.body.id
         }
@@ -27,6 +27,19 @@ router.post('/', (req, res) => Project.findAll({
     })
     .catch(err => console.log(err))
 );
+
+// Add a project
+router.post('/', (req, res) => {
+
+    Project.create({
+        title: req.body.title,
+        description: req.body.description
+    })
+    // .then(project => res.redirect('/projects'))
+    .then(res.json('added a new project successfully'))
+    .catch(err => console.log(err))
+
+});
 
 // Update a project
 router.put('/', (req, res) => Project.update(
@@ -56,18 +69,6 @@ router.post('/delete', (req, res) => Project.destroy({
 
 
     
-// Add a project
-router.post('/', (req, res) => {
-
-    Project.create({
-        title: req.body.title,
-        description: req.body.description
-    })
-    // .then(project => res.redirect('/projects'))
-    .then(res.json('added a new project successfully'))
-    .catch(err => console.log(err))
-
-});
       
     
 module.exports = router;
