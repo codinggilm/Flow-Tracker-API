@@ -8,7 +8,13 @@ const Project = db.define('project', {
     description: {
         type: Sequelize.STRING
     }
-})
+});
+
+Project.associate = models => {
+    Project.hasMany(models.Ticket, {
+        onDelete: "cascade"
+    });
+}
  
 
 module.exports = Project;

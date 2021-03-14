@@ -21,7 +21,7 @@ router.post('/', (req, res) => Ticket.findAll({
         }
     })  
     .then(ticket => {
-        console.log(ticket)
+        // console.log(ticket)
         res.json(ticket)
     })
     .catch(err => console.log(err))
@@ -29,8 +29,8 @@ router.post('/', (req, res) => Ticket.findAll({
 
     
 // Add a ticket
-router.post('/', (req, res) => {
-    console.log(req.body)
+router.post('/create', (req, res) => {
+    // console.log(req.body)
 
     Ticket.create({
         title: req.body.title,
@@ -50,9 +50,9 @@ router.post('/', (req, res) => {
 });
 
 
-router.post('/add', (req, res) => {
-console.log(req.body)
-});
+// router.post('/add', (req, res) => {
+// console.log(req.body)
+// });
     
     
 module.exports = router;

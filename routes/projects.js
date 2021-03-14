@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const Project = require('../models/Project');
+const Ticket = require('../models/Ticket');
+
+
+// Associations
+
+// Project.hasMany(Ticket);
+// Ticket.belongsTo(Project);
+// Ticket.sync();
 
 
 // Fetch all projects
@@ -9,14 +17,14 @@ router.get('/', (req, res) => Project.findAll()
     .then(projects => {
         // console.log(projects)
         res.json(projects)
-        // console.log(projects)
+        // console.log(projects) 
         // res.sendStatus(200)
     })
     .catch(err => console.log(err))
 );
 
 // Fetch specific project
-router.get('/', (req, res) => Project.findAll({
+router.post('/', (req, res) => Project.findAll({
         where: {
             id: req.body.id
         }
@@ -29,7 +37,7 @@ router.get('/', (req, res) => Project.findAll({
 );
 
 // Add a project
-router.post('/', (req, res) => {
+router.post('/create', (req, res) => {
 
     Project.create({
         title: req.body.title,
@@ -51,7 +59,9 @@ router.put('/', (req, res) => Project.update(
         where: {
             id: req.body.id
         }
-    } 
+    }
+    .then(res.json('updated project successfully'))
+    .catch(err => console.log(err)) 
 ))
 
 // router.post('/delete', (req, res) => console.log(req.body))
