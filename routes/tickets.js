@@ -50,9 +50,41 @@ router.post('/create', (req, res) => {
 });
 
 
-// router.post('/add', (req, res) => {
-// console.log(req.body)
-// });
+// Update a ticket
+
+// router.put('/', (req, res) => console.log(req.body.data))
+router.put('/', (req, res) => Ticket.update(
+    {
+        title: req.body.data.title,
+        description: req.body.data.description,
+        project: req.body.data.project,
+        projectId: req.body.data.projectId,
+        developer: req.body.data.developer,
+        priority: req.body.data.priority,
+        status: req.body.data.status,
+        type: req.body.data.type
+    }, 
+    {
+        where: {
+            id: req.body.id
+        }
+    }
+)
+// .then(Project.update(
+//     {
+//     project: req.body.data.title
+//     },
+//     {
+//         where: {
+//             projectId: req.body.id
+//         }
+//     }
+    
+// ))
+.then(console.log(req.body.data))
+.then(res.json('updated ticket successfully'))
+.catch(err => console.log(err)) 
+)
     
     
 module.exports = router;
