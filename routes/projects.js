@@ -32,7 +32,7 @@ router.post('/create', (req, res) => Project.create({
         title: req.body.title,
         description: req.body.description
     })
-    // .then(project => res.redirect('/projects'))
+    .then(console.log(req.body.data))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
@@ -60,12 +60,14 @@ router.put('/', (req, res) => Project.update(
         }
         
     ))
-    .then(res.json('updated project successfully'))
+    .then(console.log(req.body.data))
+    .then(res.json(console.log('updated project successfully')))
     .catch(err => console.log(err)) 
 )
 
-// router.post('/delete', (req, res) => console.log(req.body))
 
+
+// Delete a project
 router.post('/delete', (req, res) => Project.destroy({
         where: {
             id: req.body.id
@@ -78,9 +80,12 @@ router.post('/delete', (req, res) => Project.destroy({
         }
         
     ))
-    .then(console.log('project and all associated tickets have been successfully deleted'))
+    .then(console.log(req.body.data))
+    .then(res.json(console.log('project and all associated tickets have been successfully deleted')))
     .catch(err => console.log(err))
 )
+
+
 
 
 

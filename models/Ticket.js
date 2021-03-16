@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-// const Project = require('./Project'); 
 
 const Ticket = db.define('ticket', {
     title: {
@@ -35,15 +34,5 @@ const Ticket = db.define('ticket', {
     }
 })
 
-// Ticket.associate = models => {
-//     Ticket.belongsTo(models.Project, {
-//         foreignKey: {
-//             allowNull: false
-//         }
-//     });
-// }
-
-// Ticket.belongsTo(models.Project);
- 
 
 module.exports = Ticket;
