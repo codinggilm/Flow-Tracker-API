@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../config/database');
 const Project = require('../models/Project');
 const Ticket = require('../models/Ticket');
+const User = require('../models/User');
 
 
 
@@ -38,30 +39,60 @@ router.post('/create', (req, res) => Project.create({
 );
 
 // Update a project
-router.put('/', (req, res) => Project.update(
-        {
-            title: req.body.data.title,
-            description: req.body.data.description
-        }, 
-        {
-            where: {
-                id: req.body.id
-            }
+router.put('/', (req, res) => Project.update({
+        title: req.body.data.title,
+        description: req.body.data.description
+    }, 
+    {
+        where: {
+            id: req.body.id
         }
-    )
-    .then(Ticket.update(
-        {
-        project: req.body.data.title
+    })
+    .then(Ticket.update({ 
+        project: req.body.data.title 
         },
         {
             where: {
                 projectId: req.body.id
             }
         }
-        
-    ))
+    )) 
     .then(console.log(req.body.data))
-    .then(res.json(console.log('updated project successfully')))
+    .then(res.json(console.log('project successfully updated')))
+    .catch(err => console.log(err))  
+)
+
+
+// Update a project and remove user from project
+router.put('/editAndRemoveUser', (req, res) => Project.update({
+        title: req.body.data.title,
+        description: req.body.data.description
+    }, 
+    {
+        where: {
+            id: req.body.id
+        }
+    })
+    .then(Ticket.update({ 
+        project: req.body.data.title 
+        },
+        {
+            where: {
+                projectId: req.body.id
+            }
+        }
+    )) 
+    .then(User.update(
+        { projectId: null },
+            {
+                where: {
+                    username: req.body.data.userToRemove
+                }
+            }
+        )
+    )
+    .then(console.log(req.body.data))
+    .then(res.json(console.log('project successfully updated and user removed')))
     .catch(err => console.log(err)) 
 )
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const Ticket = require('../models/Ticket');
-
+ 
 
 // Get list of all tickets
 router.get('/', (req, res) => Ticket.findAll()
