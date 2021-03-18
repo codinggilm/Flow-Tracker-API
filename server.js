@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
 app.use('/projects', require('./routes/projects'))
 app.use('/tickets', require('./routes/tickets'))
 app.use('/users', require('./routes/users'))
+app.use('/comments', require('./routes/comments'))
 
 
 

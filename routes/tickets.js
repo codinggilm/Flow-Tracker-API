@@ -42,7 +42,7 @@ router.post('/create', (req, res) => {
         submitter: req.body.submitter,
         comment: req.body.comment
     })
-    .then(console.log(req.body.data))
+    .then(console.log(req.body))
     .then(res.json('added a new ticket successfully'))
     .catch(err => console.log(err))
 });
@@ -63,7 +63,7 @@ router.put('/', (req, res) => Ticket.update(
         }, 
         {
             where: {
-                id: req.body.id
+                id: req.body.id 
             }
         }
     )
