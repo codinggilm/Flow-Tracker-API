@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
-const Project = require('../models/Project');
-const Ticket = require('../models/Ticket');
-const User = require('../models/User');
+const Project = require('../models3/Project');
+const UserProject = require('../models3/UserProject');
+// const Ticket = require('../models/Ticket');
+// const User = require('../models/User');
 
 
 
 // Fetch all projects
-router.get('/', (req, res) => Project.findAll()
+router.get('/', (req, res) => Project_.findAll()
     .then(projects => {
         // console.log(projects)
         res.json(projects)
@@ -41,27 +42,61 @@ router.post('/', (req, res) => Project.findAll({
 // );
 
 // ********** MANUEL CREATION *******************
-// router.get('/create', (req, res) => {
-//     const data = {
-//         title: 'Project Foxtrot',
-//         description: 'Yippikaye',
+router.get('/create', (req, res) => {
+    const data = {
+        title: 'Hedera'
+
         
-//     }
+    }
 
-//     let {title, description} = data;
+    let {title, description} = data;
 
-//     Project.create({
-//             title,
-//             description
-//     })
+    Project.create({
+        title
+    })
         
     
-//     .then(console.log(req.body.data))
-//     .then(console.log(req.body.data))
-//     .then(res.json('added a new user successfully'))
-//     .catch(err => console.log(err))
-// });
+    .then(project => res.json(project))
+    // .then(console.log(req.body.data))
+    // .then(res.json('added a new user successfully'))
+    // .catch(err => console.log(err))
+});
 
+
+// Assign Project to User
+router.get('/assign', (req, res) => {
+    const data = {
+        userID: 3,
+        projectID: 1
+    }
+
+    let {userID, projectID} = data;
+
+    UserProject.create({
+        userID,
+        projectID
+    })
+        
+    
+    .then(UserProject => res.json(UserProject))
+});
+
+
+// Get all projects of a user ************
+router.get('/userProjects', (req, res) => {
+    const data = {
+        userID: 3
+    }
+
+    let {userID} = data;
+
+    UserProject.findAll({
+        where: {userID: userID}
+    })
+        
+    
+    .then(UserProjects => res.json(UserProjects))
+});
 
 
 // Create a project and assign user

@@ -15,51 +15,22 @@ router.get('/', (req, res) => Comment.findAll()
     })
     .catch(err => console.log(err))
 );
+  
 
-
-// Fetch specific comment
+// Fetch comments of specific Ticket
 router.post('/', (req, res) => Comment.findAll({
         where: {
-            id: req.body.id
+            ticketId: req.body.id
         }
-    })  
-    .then(comment => res.json(comment))
+    })
+    .then(console.log(req.body))
+    .then(comments => res.json(comments))
     .catch(err => console.log(err))
 );
 
-
-// // Add a Comment
-// *************  MANUAL ********************************* //
-// router.get('/create', (req, res) => {
-//     const data = {
-//         user: 'Joddy Jones',
-//         content: 'the best comment',
-//         role: 'Project Manager',
-//         projectId: 35,
-//         ticketId: 18,
-//         project: 'Black Sabbath'
-//     }
-
-//     let {user, content, role, projectId, ticketId, project} = data;
-
-//     Comment.create({
-//         user,
-//         content,
-//         role,
-//         projectId,
-//         ticketId,
-//         project
-//     })
-        
-    
-//     // .then(console.log(req.body.data))
-//     .then(console.log(req.body))
-//     .then(res.json('added a new comment successfully'))
-//     .catch(err => console.log(err))
-// });
-
+// Add new comment
 router.post('/create', (req, res) => Comment.create({
-        user: req.body.username,
+        user: req.body.user,
         role: req.body.role,
         content: req.body.content,
         ticketId: req.body.ticketId,
@@ -67,10 +38,31 @@ router.post('/create', (req, res) => Comment.create({
         project: req.body.project
 
     })
-    .then(console.log(req.body.data))
-    .then(res.json('added a new comment successfully'))
+    .then(console.log(req.body))
+    .then(comment => res.json(comment))
+    .then(console.log('added a new comment successfully'))
     .catch(err => console.log(err))
 );
+
+
+// Delete a comment
+router.post('/delete', (req, res) => Comment.destroy({
+        where: {
+            id: req.body.id
+        } 
+    })
+    // .then(Comment.findAll().then(comments => res.json(comments)))
+    .then(Comment.findAll({
+            where: {
+                ticketId: req.body.ticketId
+            }
+        })
+    .then(comments => res.json(comments))
+    )
+    .then(console.log(req.body.ticketId))
+    // .then(res.json('deleted comment successfully'))
+    .catch(err => console.log(err))
+)
 
 
 module.exports = router;

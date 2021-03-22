@@ -4,6 +4,9 @@ const http = require('http');
 const app = express();
 const server = http.createServer(app);
 const socketio = require('socket.io');
+// const Project_ = require('./models/Project_');
+// const Ticket_ = require('./models/Ticket_');
+// const User_ = require('./models/User_');
 const io = socketio(server, {
     cors: {
       origin: "http://localhost:3001",
@@ -12,10 +15,6 @@ const io = socketio(server, {
     }
 });
 
-
-// const Sequelize = require('sequelize');
-// const db = require('../config/database'); 
-// const { sequelize } = require('./Models');
 
 
 
@@ -40,10 +39,10 @@ app.get('/', (req, res) => {
  
 
 // Project routes
-app.use('/projects', require('./routes/projects'))
-app.use('/tickets', require('./routes/tickets'))
-app.use('/users', require('./routes/users'))
-app.use('/comments', require('./routes/comments'))
+app.use('/projects', require('./routes3/projects'))
+app.use('/users', require('./routes3/users'))
+// app.use('/tickets', require('./routes3/tickets'))
+// app.use('/comments', require('./routes3/comments'))
 
 
 
