@@ -13,13 +13,14 @@ router.get('/', (req, res) => User.findAll()
     .then(users => {
         res.json(users)
     })
+    .then(console.log(req.body))
     .catch(err => console.log(err))
-);
+); 
 
 // Fetch all users of a project *****************************************************
 
 router.post('/project-users', (req, res) => ProjectUser.findAll({
-        where: {
+        where: { 
             projectID: req.body.id
         }
     })
@@ -29,14 +30,15 @@ router.post('/project-users', (req, res) => ProjectUser.findAll({
 )
 
 // // Fetch specific user **********************************************************
-router.post('/', (req, res) => User.findAll({
-        where: {
-            id: req.body.id
-        }
-    })  
-    .then(user => res.json(user))
-    .catch(err => console.log(err))
-);
+// router.post('/', (req, res) => User.findAll({
+//         where: {
+//             id: req.body.id
+//         } 
+//     })  
+//     .then(console.log(req.body))
+//     .then(user => res.json(user))
+//     .catch(err => console.log(err))
+// );
 
 // // Add a user  ********************************************************************
 //   MANUAL //
@@ -81,7 +83,7 @@ router.get('/create', (req, res) => {
  
 // Assign user to Project ******************************************
 
-router.post('/assign-project', (req, res) => UserProject.create({
+router.post('/assign-project', (req, res) => ProjectUser.create({
         userID: req.body.userId,
         username: req.body.username,
         projectID: req.body.projectId,

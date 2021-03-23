@@ -13,12 +13,6 @@ const User = db.define('user', {
     },
     role: {
         type: Sequelize.STRING
-    },
-    projectId: {
-        type: Sequelize.STRING
-    },
-    ticketId: {
-        type: Sequelize.STRING
     }
 })
  
