@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const Ticket = require('../models/Ticket'); 
-// const Comment = require('../models/Comment');
+const Comment = require('../models/Comment');
  
 
-// Get list of all tickets
+// Fetch all tickets
 router.get('/', (req, res) => Ticket.findAll()
     .then(tickets => {
         // console.log(tickets)
@@ -15,7 +15,7 @@ router.get('/', (req, res) => Ticket.findAll()
 );
  
 
-// Fetch specific ticket
+// Fetch one ticket  *************************************************
 router.post('/', (req, res) => Ticket.findAll({
         where: {
             id: req.body.id
@@ -28,7 +28,7 @@ router.post('/', (req, res) => Ticket.findAll({
 );
 
     
-// Add a ticket
+// Create a ticket  *******************************************************
 router.post('/create', (req, res) => {
 
     Ticket.create({
@@ -37,14 +37,17 @@ router.post('/create', (req, res) => {
         project: req.body.project,
         projectId: req.body.projectId,
         developer: req.body.developer,
+        developerId: req.body.developerId,
         priority: req.body.priority,
         status: req.body.status,
         type: req.body.type,
-        submitter: req.body.submitter,
-        comment: req.body.comment
+        submitter: req.body.submitter
     })
     .then(console.log(req.body))
     .then(console.log('added a new ticket successfully'))
+    .then(ticket => console.log(ticket))
+    .then(ticket => res.json(ticket))
+    // .then(res.redirect('/tickets'))
     // .then(res.json('added a new ticket successfully'))
     .catch(err => console.log(err))
 });
@@ -52,38 +55,38 @@ router.post('/create', (req, res) => {
 
 // MANUAL CREATION *********************
 
-router.get('/create', (req, res) => {
+// router.get('/create', (req, res) => {
 
-    const data = {
-        title: "Not wowking",
-        description: "Go broke stay woke",
-        developer: "Risoto",
-        priority: "High",
-        status: "Open",
-        type: "Bug",
-        submitter: "Plum" 
-    }
+//     const data = {
+//         title: "Not wowking",
+//         description: "Go broke stay woke",
+//         developer: "Risoto",
+//         priority: "High",
+//         status: "Open",
+//         type: "Bug",
+//         submitter: "Plum" 
+//     }
 
-    let {title, description, developer, priority, status, type, submitter } = data;
+//     let {title, description, developer, priority, status, type, submitter } = data;
 
-    Ticket.create({
-        title,
-        description,
-        developer,
-        priority,
-        status,
-        type,
-        submitter,
-    })
+//     Ticket.create({
+//         title,
+//         description,
+//         developer,
+//         priority,
+//         status,
+//         type,
+//         submitter,
+//     })
 
-    .then(ticket => res.json(ticket))
-    // .then(console.log(req.body))
-    // .then(res.json('added a new ticket successfully'))
-    .catch(err => console.log(err))
-});
+//     .then(ticket => res.json(ticket))
+//     // .then(console.log(req.body))
+//     // .then(res.json('added a new ticket successfully'))
+//     .catch(err => console.log(err))
+// });
 
 
-// Add a ticket with a comment
+// Create a ticket with a comment  ****************************************************
 router.post('/createWithComment', (req, res) => {
 
     Ticket.create({
@@ -92,29 +95,31 @@ router.post('/createWithComment', (req, res) => {
         project: req.body.project,
         projectId: req.body.projectId,
         developer: req.body.developer,
+        developerId: req.body.developerId,
         priority: req.body.priority,
         status: req.body.status,
         type: req.body.type,
-        submitter: req.body.submitter,
-        comment: req.body.comment
+        submitter: req.body.submitter
     })
     .then(ticket => Comment.create({
         user: 'Jerry',
+        userId: 1,
         role: 'Admin',
-        content: ticket.comment,
+        content: req.body.comment,
         ticketId: ticket.id,
         projectId: ticket.projectId,
         project: ticket.project
 
     }))
     .then(console.log(req.body))
-    .then(ticket => console.log(ticket.id))
+    .then(ticket => res.json(ticket))
     .then(console.log('added a new ticket and comment successfully'))
+    // .then(res.json('/tickets'))
     .catch(err => console.log(err))
 });
 
 
-// Update a ticket
+// Update a ticket  *******************************************************************
 
 router.put('/', (req, res) => Ticket.update(
         {
@@ -123,6 +128,7 @@ router.put('/', (req, res) => Ticket.update(
             project: req.body.data.project,
             projectId: req.body.data.projectId,
             developer: req.body.data.developer,
+            developerId: req.body.data.developerId,
             priority: req.body.data.priority,
             status: req.body.data.status,
             type: req.body.data.type
@@ -132,19 +138,20 @@ router.put('/', (req, res) => Ticket.update(
                 id: req.body.id 
             }
         }
-    )
-    .then(console.log(req.body.data))
+    ) 
+    // .then(console.log(req.body))
+    .then(ticket => res.json(console.log(ticket)))
     .then(res.json('updated ticket successfully'))
     .catch(err => console.log(err)) 
-)
+) 
 
-// Delete a ticket
+// Delete a ticket  ***********************************************************************
 router.post('/delete', (req, res) => Ticket.destroy({
         where: {
             id: req.body.id
-        }
+        } 
     })
-    .then(console.log(req.body.data))
+    .then(console.log(req.body))
     .then(res.json(console.log('ticket has been successfully deleted')))
     .catch(err => console.log(err))
 )

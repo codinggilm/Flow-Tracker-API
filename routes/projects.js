@@ -21,7 +21,6 @@ router.get('/', (req, res) => Project.findAll()
 );   
 
 // Fetch specific project
-// router.get('/:id', (req, res) => Project.findAll({
 router.post('/', (req, res) => Project.findAll({
     
         where: {
@@ -74,7 +73,7 @@ router.post('/create', (req, res) => Project.create({
         title: req.body.title,
         description: req.body.description
     })
-    .then(console.log(req.body.data))
+    // .then(console.log(req.body.data))
     .then(project => console.log(project))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))

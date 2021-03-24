@@ -91,7 +91,7 @@ router.post('/assign-project', (req, res) => ProjectUser.create({
     })
     .then(console.log(req.body))
     // .then(userProject => console.log(userProject)) 
-    .then(console.log('user has been assigned to project successfully'))
+    .then(res.json(console.log('user has been assigned to project successfully')))
     .catch(err => console.log(err))
 ) 
 

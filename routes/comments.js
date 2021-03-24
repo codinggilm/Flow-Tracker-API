@@ -7,7 +7,7 @@ const Comment = require('../models/Comment');
 // const User = require('../models/User');
 
 
-// Fetch all comments
+// Fetch all comments  
 router.get('/', (req, res) => Comment.findAll()
     .then(comments => {
         res.json(comments)
@@ -17,7 +17,7 @@ router.get('/', (req, res) => Comment.findAll()
 );
   
 
-// Fetch comments of specific Ticket
+// Fetch comments of specific Ticket **************************************
 router.post('/', (req, res) => Comment.findAll({
         where: {
             ticketId: req.body.id
@@ -28,9 +28,10 @@ router.post('/', (req, res) => Comment.findAll({
     .catch(err => console.log(err))
 );
 
-// Add new comment
+// Add new comment ********************************************************
 router.post('/create', (req, res) => Comment.create({
         user: req.body.user,
+        userId: req.body.userId,
         role: req.body.role,
         content: req.body.content,
         ticketId: req.body.ticketId,
@@ -45,7 +46,8 @@ router.post('/create', (req, res) => Comment.create({
 );
 
 
-// Delete a comment
+// Delete a comment *************************************************************
+// router.post('/delete', (req, res) => console.log(req.body))
 router.post('/delete', (req, res) => Comment.destroy({
         where: {
             id: req.body.id
@@ -57,10 +59,13 @@ router.post('/delete', (req, res) => Comment.destroy({
                 ticketId: req.body.ticketId
             }
         })
-    .then(comments => res.json(comments))
+        .then(comments => res.json(comments))
+        // .then(comments => console.log(comments))
     )
-    .then(console.log(req.body.ticketId))
-    // .then(res.json('deleted comment successfully'))
+    // .then(comments => res.json(comments))
+    // .then(console.log(req.body))
+    .then(console.log('comment deleted successfully'))
+    // .then(res.json('comment deleted successfully'))
     .catch(err => console.log(err))
 )
 

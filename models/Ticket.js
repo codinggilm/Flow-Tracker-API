@@ -8,11 +8,14 @@ const Ticket = db.define('ticket', {
     project: {
         type: Sequelize.STRING
     },
-    projectId: {
+    projectId: { 
         type: Sequelize.STRING
     },
     developer: {
         type: Sequelize.STRING
+    },
+    developerId: {
+        type: Sequelize.INTEGER
     },
     priority: {
         type: Sequelize.STRING
@@ -27,9 +30,6 @@ const Ticket = db.define('ticket', {
         type: Sequelize.STRING
     },
     submitter: {
-        type: Sequelize.STRING
-    },
-    comment: {
         type: Sequelize.STRING
     }
 })
