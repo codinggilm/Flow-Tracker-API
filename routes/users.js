@@ -19,9 +19,10 @@ router.get('/', (req, res) => User.findAll()
 
 // Fetch all users of a project *****************************************************
 
-router.post('/project-users', (req, res) => ProjectUser.findAll({
+// router.post('/project-users', (req, res) => ProjectUser.findAll({
+router.get('/project-users/:id', (req, res) => ProjectUser.findAll({
         where: { 
-            projectID: req.body.id
+            projectID: req.params.id
         }
     })
     .then(console.log(req.body))
@@ -98,14 +99,14 @@ router.post('/assign-project', (req, res) => ProjectUser.create({
 
 // Update a user's role ********************************************************************
 
-router.put('/', (req, res) => User.update(
+router.put('/role/:id', (req, res) => User.update(
         {
             role: req.body.role,
             
         }, 
         {
             where: {
-                username: req.body.username
+                id: req.params.id
             }
         }
     )
@@ -117,11 +118,5 @@ router.put('/', (req, res) => User.update(
 
 
 
-
-
-
-
-    
-      
     
 module.exports = router;

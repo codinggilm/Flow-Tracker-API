@@ -21,51 +21,15 @@ router.get('/', (req, res) => Project.findAll()
 );   
 
 // Fetch specific project
-router.post('/', (req, res) => Project.findAll({
+router.get('/:id', (req, res) => Project.findAll({
     
         where: {
-            // id: req.params
-            id: req.body.id
+            id: req.params.id
         }
     })
     .then(project => res.json(project))
     .catch(err => console.log(err))
 );
-
-//************************************************************* */
-
-// Create a project
-// router.post('/create', (req, res) => Project.create({
-//         title: req.body.title,
-//         description: req.body.description
-//     })
-//     .then(console.log(req.body.data))
-//     .then(res.json('added a new project successfully'))
-//     .catch(err => console.log(err))
-// );
-
-// ********** MANUEL CREATION *******************
-// router.get('/create', (req, res) => {
-//     const data = {
-//         title: 'Project Foxtrot',
-//         description: 'Yippikaye',
-        
-//     }
-
-//     let {title, description} = data;
-
-//     Project.create({
-//             title,
-//             description
-//     })
-        
-    
-//     .then(console.log(req.body.data))
-//     .then(console.log(req.body.data))
-//     .then(res.json('added a new user successfully'))
-//     .catch(err => console.log(err))
-// });
-
 
 
 // Create a project  *******************************************************
@@ -74,7 +38,7 @@ router.post('/create', (req, res) => Project.create({
         description: req.body.description
     })
     // .then(console.log(req.body.data))
-    .then(project => console.log(project))
+    // .then(project => console.log(project))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
@@ -92,19 +56,19 @@ router.post('/createWithUser', (req, res) => Project.create({
     }))
     .then(console.log(req.body.data))
     // .then(project => console.log(project))
-    // .then(project => console.log(project))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
 
 // Update a project ***********************************************************
-router.put('/', (req, res) => Project.update({
+router.put('/update/:id', (req, res) => Project.update({
         title: req.body.title,
         description: req.body.description
     }, 
     {
         where: {
-            id: req.body.projectId
+            // id: req.body.projectId
+            id: req.params.id
         }
     })
     .then(Ticket.update({ 
@@ -112,7 +76,7 @@ router.put('/', (req, res) => Project.update({
         },
         {
             where: {
-                projectId: req.body.projectId
+                projectId: req.params.id
             }
         }
     ))
@@ -120,7 +84,7 @@ router.put('/', (req, res) => Project.update({
             project: req.body.title
         },
         {
-        where: { projectID: req.body.projectId }
+        where: { projectID: req.params.id }
         }
     )) 
     .then(console.log(req.body))
@@ -130,13 +94,13 @@ router.put('/', (req, res) => Project.update({
 
 
 // Update a project and remove a user from the project  ********************************************
-router.put('/editAndRemoveUser', (req, res) => Project.update({
+router.put('/updateAndRemoveUser/:id', (req, res) => Project.update({
         title: req.body.title,
         description: req.body.description
     }, 
     {
         where: {
-            id: req.body.projectId
+            id: req.params.id
         }
     })
     .then(Ticket.update({ 
@@ -144,7 +108,7 @@ router.put('/editAndRemoveUser', (req, res) => Project.update({
         },  
         {
             where: {
-                projectId: req.body.projectId
+                projectId: req.params.id
             }
         }
     )) 
@@ -152,7 +116,7 @@ router.put('/editAndRemoveUser', (req, res) => Project.update({
         {
             where: {
                 userID: req.body.userToRemove,
-                projectID: req.body.projectId
+                projectID: req.params.id
             }
         }
     )) 
@@ -164,9 +128,9 @@ router.put('/editAndRemoveUser', (req, res) => Project.update({
 
 
 // Delete a project ( CASCADE via foreign key) ********************************************************
-router.post('/delete', (req, res) => Project.destroy({
+router.post('/delete/:id', (req, res) => Project.destroy({
         where: {
-            id: req.body.id
+            id: req.params.id
         }
     })
     // .then(Ticket.destroy({
