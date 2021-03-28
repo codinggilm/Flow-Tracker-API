@@ -68,18 +68,16 @@ router.get('/create', (req, res) => {
 });
 
 
-// router.post('/create', (req, res) => User.create({
-//         username: req.body.username,
-//         password: req.body.password,
-//         email: req.body.email,
-//         role: req.body.role,
-//         projectId: req.body.projectId,
-//         ticketId: req.body.ticketId
-//     })
-//     .then(console.log(req.body.data))
-//     .then(res.json('added a new project successfully'))
-//     .catch(err => console.log(err))
-// );
+router.post('/create', (req, res) => User.create({
+        company: req.body.company,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+    })
+    .then(console.log(req.body.data))
+    .then(res.json('added a new project successfully'))
+    .catch(err => console.log(err))
+);
   
  
 // Assign user to Project ******************************************

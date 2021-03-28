@@ -2,6 +2,9 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 const User = db.define('user', {
+    company: {
+        type: Sequelize.STRING
+    },
     username: {
         type: Sequelize.STRING
     },
