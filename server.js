@@ -3,6 +3,8 @@ const cors = require('cors');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
+const passport= require('passport');
+const initializePassport = require('./config/passport');
 const socketio = require('socket.io');
 const io = socketio(server, {
     cors: {
@@ -13,12 +15,7 @@ const io = socketio(server, {
 });
 
 
-// const Sequelize = require('sequelize');
-// const db = require('../config/database'); 
-// const { sequelize } = require('./Models');
-
-
-
+// initializePassport(passport);
  
 // Database
 const db = require('./config/database');

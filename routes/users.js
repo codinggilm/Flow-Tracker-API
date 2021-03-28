@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+// let salt = bcrypt.genSaltSync(10);
+// let hash = bcrypt.hashSync("B4c0/\/", salt);
 const db = require('../config/database');
 const User = require('../models/User');
 const ProjectUser = require('../models/ProjectUser')
@@ -18,8 +21,6 @@ router.get('/', (req, res) => User.findAll()
 ); 
 
 // Fetch all users of a project *****************************************************
-
-// router.post('/project-users', (req, res) => ProjectUser.findAll({
 router.get('/project-users/:id', (req, res) => ProjectUser.findAll({
         where: { 
             projectID: req.params.id
@@ -41,47 +42,51 @@ router.get('/project-users/:id', (req, res) => ProjectUser.findAll({
 //     .catch(err => console.log(err))
 // );
 
-// // Add a user  ********************************************************************
-//   MANUAL //
-router.get('/create', (req, res) => {
-    const data = {
-        username: 'Brad Garlinghouse'
-        // password: '123',
-        // email: 'derek@mail.com',
-        // role: 'Submitter',
-        // projectId: null,
-        // ticketId: null
-    }
+// // Login a user  ********************************************************************
+router.post('/login', (req,res) => {
 
-    // let {username, password, email, role, projectId, ticketId} = data;
-    let {username} = data;
-
-    User.create({
-        username
+    User.findOne({
+        where: {
+            // email: req.body.email
+            username: req.body.username
+        }
     })
-        
-    
-    .then(user => res.json(user))
-    // .then(console.log(req.body.data))
-    // .then(res.json('added a new user successfully'))
-    // .catch(err => console.log(err))
+    .then(user => {
+        // if (bcrypt.compareSync(req.body.password, user.dataValues.password) && req.body.email === user.dataValues.email) {
+        if (bcrypt.compareSync(req.body.username, user.dataValues.password) && req.body.username === user.dataValues.username) {
+            console.log('success!')
+            console.log(user.dataValues)
+            res.json(user.dataValues)
+        } else {
+            console.log('nu huh')
+        }
+    })
+    .catch(err => res.status(400).json('no such user' + err))
+})
+
+
+// // Register a user  ********************************************************************
+router.post('/register', (req, res) => {
+
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+            // Store hash in your password DB.
+            User.create({
+                company: req.body.company,
+                username: req.body.username,
+                password: hash,
+                email: req.body.email,
+            })
+            .then(console.log(req.body))
+            .then(res.json('created new user successfully'))
+            .catch(err => res.json('unable to register:' + err))
+        });
+    })
+
 });
-
-
-router.post('/create', (req, res) => User.create({
-        company: req.body.company,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-    })
-    .then(console.log(req.body.data))
-    .then(res.json('added a new project successfully'))
-    .catch(err => console.log(err))
-);
   
  
 // Assign user to Project ******************************************
-
 router.post('/assign-project', (req, res) => ProjectUser.create({
         userID: req.body.userId,
         username: req.body.username,
@@ -96,7 +101,6 @@ router.post('/assign-project', (req, res) => ProjectUser.create({
 
 
 // Update a user's role ********************************************************************
-
 router.put('/role/:id', (req, res) => User.update(
         {
             role: req.body.role,

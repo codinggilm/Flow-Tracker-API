@@ -90,9 +90,7 @@ router.post('/createWithComment', (req, res) => {
 // Update a ticket **************************************************
 
 // router.put('/', (req, res) => {
-router.put('/update/:id', (req, res) => {
-
-    Ticket.update(
+router.put('/update/:id', (req, res) => Ticket.update(
         {
             title: req.body.title,
             description: req.body.description,
@@ -105,27 +103,19 @@ router.put('/update/:id', (req, res) => {
             type: req.body.type
         }, 
         {
-            where: {
-                id: req.params.id 
-                // id: req.body.id 
-            }
+            where: { id: req.params.id }
         }
     ) 
-    // .then(ticket => console.log(ticket[0].dataValues))
-    // .then(newticket => console.log(newticket))  // THE ONE
-    // .then(ticket => {
-    //     console.log(Object.assign({ticket}, ticket))
-    // })  
     .then(ticket => res.json(ticket))
-    // .then(res.json('updated ticket successfully'))
+    .then(console.log('updated ticket successfully'))
     .catch(err => console.log(err)) 
-    }
 )
 
 
 // Save Ticket History *******************************************************************
 
-router.post('/save-history/:id', (req, res) => TicketHistory.create({
+router.post('/save-history/:id', (req, res) => TicketHistory.create(
+    {
         property: req.body.property,
         oldValue: req.body.oldValue,
         newValue: req.body.newValue,
@@ -141,11 +131,9 @@ router.post('/save-history/:id', (req, res) => TicketHistory.create({
 // Get Ticket History ********************************************************************
 
 // router.post('/history/:id', (req, res) => TicketHistory.findAll({
-router.get('/history/:id', (req, res) => TicketHistory.findAll({
-        where: {
-            // ticketId: req.body.id
-            ticketId: req.params.id
-        }
+router.get('/history/:id', (req, res) => TicketHistory.findAll(
+    {
+        where: { ticketId: req.params.id }
     })
     .then(console.log(req.body))
     .then(history => res.json(history))
@@ -154,10 +142,9 @@ router.get('/history/:id', (req, res) => TicketHistory.findAll({
 
 
 // Delete a ticket  ***********************************************************************
-router.post('/delete/:id', (req, res) => Ticket.destroy({
-        where: {
-            id: req.params.id
-        } 
+router.post('/delete/:id', (req, res) => Ticket.destroy(
+    {
+        where: { id: req.params.id } 
     })
     .then(console.log(req.body))
     .then(res.json(console.log('ticket has been successfully deleted')))

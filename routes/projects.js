@@ -12,20 +12,14 @@ const ProjectUser = require('../models/ProjectUser')
 // Fetch all projects
 router.get('/', (req, res) => Project.findAll()
     .then(projects => {
-        // console.log(projects)
         res.json(projects)
-        // console.log(projects) 
-        // res.sendStatus(200) 
     })
     .catch(err => console.log(err))
 );   
 
 // Fetch specific project
 router.get('/:id', (req, res) => Project.findAll({
-    
-        where: {
-            id: req.params.id
-        }
+        where: { id: req.params.id }
     })
     .then(project => res.json(project))
     .catch(err => console.log(err))
@@ -33,7 +27,8 @@ router.get('/:id', (req, res) => Project.findAll({
 
 
 // Create a project  *******************************************************
-router.post('/create', (req, res) => Project.create({
+router.post('/create', (req, res) => Project.create(
+    {
         title: req.body.title,
         description: req.body.description
     })
@@ -44,7 +39,8 @@ router.post('/create', (req, res) => Project.create({
 );
 
 // Create and assign a user  *************************************************
-router.post('/createWithUser', (req, res) => Project.create({
+router.post('/createWithUser', (req, res) => Project.create(
+    {
         title: req.body.title,
         description: req.body.description
     })
@@ -55,7 +51,6 @@ router.post('/createWithUser', (req, res) => Project.create({
         project: project.title 
     }))
     .then(console.log(req.body.data))
-    // .then(project => console.log(project))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
@@ -66,25 +61,21 @@ router.put('/update/:id', (req, res) => Project.update({
         description: req.body.description
     }, 
     {
-        where: {
-            // id: req.body.projectId
-            id: req.params.id
-        }
+        where: { id: req.params.id }
     })
-    .then(Ticket.update({ 
-        project: req.body.title 
+    .then(Ticket.update(
+        { 
+            project: req.body.title 
         },
         {
-            where: {
-                projectId: req.params.id
-            }
+            where: { projectId: req.params.id }
         }
     ))
     .then(ProjectUser.update({
             project: req.body.title
         },
         {
-        where: { projectID: req.params.id }
+            where: { projectID: req.params.id }
         }
     )) 
     .then(console.log(req.body))
@@ -94,32 +85,25 @@ router.put('/update/:id', (req, res) => Project.update({
 
 
 // Update a project and remove a user from the project  ********************************************
-router.put('/updateAndRemoveUser/:id', (req, res) => Project.update({
+router.put('/updateAndRemoveUser/:id', (req, res) => Project.update(
+    {
         title: req.body.title,
         description: req.body.description
     }, 
     {
-        where: {
-            id: req.params.id
-        }
+        where: { id: req.params.id }
     })
-    .then(Ticket.update({ 
-        project: req.body.title 
-        },  
+    .then(Ticket.update({ project: req.body.title }, 
         {
-            where: {
-                projectId: req.params.id
-            }
+            where: { projectId: req.params.id }
         }
     )) 
-    .then(ProjectUser.destroy(
-        {
-            where: {
-                userID: req.body.userToRemove,
-                projectID: req.params.id
-            }
+    .then(ProjectUser.destroy({
+        where: {
+            userID: req.body.userToRemove,
+            projectID: req.params.id
         }
-    )) 
+    })) 
     .then(console.log(req.body))
     .then(res.json(console.log('project successfully updated and user removed')))
     .catch(err => console.log(err)) 
@@ -129,9 +113,7 @@ router.put('/updateAndRemoveUser/:id', (req, res) => Project.update({
 
 // Delete a project ( CASCADE via foreign key) ********************************************************
 router.post('/delete/:id', (req, res) => Project.destroy({
-        where: {
-            id: req.params.id
-        }
+        where: { id: req.params.id }
     })
     // .then(Ticket.destroy({
     //         where: {
