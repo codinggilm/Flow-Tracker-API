@@ -10,6 +10,40 @@ const ProjectUser = require('../models/ProjectUser')
 // const Ticket = require('../models/Ticket');
 
 
+//********** PASSPORT *******************/
+// const initializePassport = require('../config/passport');
+
+// initializePassport(passport);
+// initializePassport(passport, email => {
+//     users.find(user => user.email === email)
+// });
+
+// const passport = require('passport');
+// const flash = require('express-flash')
+// const session = require('express-session')
+// const initializePassport = require('../config/passport');
+
+// initializePassport(passport, email => {
+//     users.find(user => user.email === email)
+// });
+
+// app.use(flash())
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false
+// }))
+// app.use(passport.initialize())
+// app.use(passport.session())
+
+
+
+// User login **********************************************************************
+// router.post('/login', passport.authenticate('local', {
+//     successRedirect: 'http://localhost:3001',
+//     failureRedirect: '/login',
+//     failureFlash: true
+// }))
 
 // Fetch all users ******************************************************************
 router.get('/', (req, res) => User.findAll()
@@ -31,58 +65,73 @@ router.get('/project-users/:id', (req, res) => ProjectUser.findAll({
     .catch(err => console.log(err))
 )
 
-// // Fetch specific user **********************************************************
-// router.post('/', (req, res) => User.findAll({
+
+//// Login a user  ********************************************************************
+// router.post('/login', passport.authenticate('local', {
+//     successRedirect: 'http://localhost:3001',
+//     failureRedirect: '/login',
+//     failureFlash: true
+// }))
+
+// router.post('/login', (req,res) => {
+//     // console.log(req.body)
+
+//     User.findOne({
 //         where: {
-//             id: req.body.id
-//         } 
-//     })  
-//     .then(console.log(req.body))
-//     .then(user => res.json(user))
-//     .catch(err => console.log(err))
-// );
+//             // email: req.body.email
+//             username: req.body.username
+//         }
+//     })
+//     .then( user => { 
+//         // console.log(user.json())
+//         if (!user) console.log('There is no such user in our database') 
+//         if (bcrypt.compareSync(req.body.password, user.dataValues.password) && req.body.username === user.dataValues.username) {
+//             console.log('success!')
+//             // console.log(user.json()
+//             res.json(user)
+//         } else {
+//             console.log('nu huh')
+//         }
+    
+    
+//     })
+//     .catch(err => res.status(400).json('no such user' + err))
+// })
 
-// // Login a user  ********************************************************************
-router.post('/login', (req,res) => {
-
-    User.findOne({
-        where: {
-            // email: req.body.email
-            username: req.body.username
-        }
-    })
-    .then(user => {
-        // if (bcrypt.compareSync(req.body.password, user.dataValues.password) && req.body.email === user.dataValues.email) {
-        if (bcrypt.compareSync(req.body.username, user.dataValues.password) && req.body.username === user.dataValues.username) {
-            console.log('success!')
-            console.log(user.dataValues)
-            res.json(user.dataValues)
-        } else {
-            console.log('nu huh')
-        }
-    })
-    .catch(err => res.status(400).json('no such user' + err))
-})
 
 
 // // Register a user  ********************************************************************
 router.post('/register', (req, res) => {
 
-    bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(req.body.password, salt, function(err, hash) {
-            // Store hash in your password DB.
-            User.create({
-                company: req.body.company,
-                username: req.body.username,
-                password: hash,
-                email: req.body.email,
-            })
-            .then(console.log(req.body))
-            .then(res.json('created new user successfully'))
-            .catch(err => res.json('unable to register:' + err))
-        });
+    const existingEmail = User.findOne({
+        where :{email: req.body.email}
     })
 
+    User.findOne({
+        where :{username: req.body.username}
+    })
+    .then(user => {
+        if (user) {
+            res.json('User already exists ')
+        } else if (existingEmail) {
+            res.json('Email already exists ')
+        } else {
+            bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(req.body.password, salt, function(err, hash) {
+                    User.create({
+                        company: req.body.company,
+                        username: req.body.username,
+                        password: hash,
+                        email: req.body.email,
+                    })
+                    .then(console.log(req.body))
+                    .then(res.json('created new user successfully'))
+                    .catch(err => res.json('unable to register:' + err))
+                });
+            })
+        }
+    })
+    .catch(err => console.log(err))
 });
   
  

@@ -1,21 +1,45 @@
+// if (process.env.NODE_ENV !== 'production') {
+//     require('dotenv').config()
+// }
+
+
+
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const passport= require('passport');
-const initializePassport = require('./config/passport');
 const socketio = require('socket.io');
 const io = socketio(server, {
     cors: {
-      origin: "http://localhost:3001",
-      methods: ["GET", "POST", "PUT"],
-      credentials: true
+        origin: "http://localhost:3001",
+        methods: ["GET", "POST", "PUT"],
+        credentials: true
     }
 });
 
+//************************* PASSPORT **************************/
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 
-// initializePassport(passport);
+// Middleware
+app.use(session({
+    // secret: process.env.SESSION_SECRET,
+    secret: 'secretcode',
+    resave: false,
+    saveUninitialized: true
+    // saveUninitialized: false
+}))
+
+app.use(cookieParser('secretcode'));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport_config')(passport);
+
+//********************************************************************************/
  
 // Database
 const db = require('./config/database');
@@ -28,11 +52,29 @@ db.authenticate()
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3001",
+    methods: ["GET", "POST", "PUT"],
+    credentials: true
+}));
 
 
 app.get('/', (req, res) => {
     res.send('index');
+})
+
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) throw err;
+        if(!user) res.json('wrong credentials');
+        else {
+            req.logIn(user, err => {
+                // if(err) res.status(400).json('wrong credentials');
+                res.json(user);
+                console.log('Successfully Authenticated');
+            })
+        }
+    })(req, res, next);
 })
  
 
