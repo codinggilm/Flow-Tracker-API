@@ -2,23 +2,22 @@
 //     require('dotenv').config()
 // }
 
-
-
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const socketio = require('socket.io');
-const io = socketio(server, {
-    cors: {
-        origin: "http://localhost:3001",
-        methods: ["GET", "POST", "PUT"],
-        credentials: true
-    }
-});
+// const socketio = require('socket.io');
+// const io = socketio(server, {
+//     cors: {
+//         origin: "http://localhost:3001",
+//         methods: ["GET", "POST", "PUT"],
+//         credentials: true
+//     }
+// });
 
 //************************* PASSPORT **************************/
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
@@ -31,7 +30,6 @@ app.use(session({
     secret: 'secretcode',
     resave: false,
     saveUninitialized: true
-    // saveUninitialized: false
 }))
 
 app.use(cookieParser('secretcode'));
@@ -39,7 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport_config')(passport);
 
-//********************************************************************************/
+
  
 // Database
 const db = require('./config/database');

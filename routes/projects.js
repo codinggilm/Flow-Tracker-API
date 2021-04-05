@@ -32,15 +32,14 @@ router.post('/create', (req, res) => Project.create(
         title: req.body.title,
         description: req.body.description
     })
-    // .then(console.log(req.body.data))
     // .then(project => console.log(project))
+    .then(console.log(req.body))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
 
-// Create and assign a user  *************************************************
-router.post('/createWithUser', (req, res) => Project.create(
-    {
+// Create a project and assign a user  *************************************************
+router.post('/createWithUser', (req, res) => Project.create({
         title: req.body.title,
         description: req.body.description
     })
@@ -64,16 +63,13 @@ router.put('/update/:id', (req, res) => Project.update({
         where: { id: req.params.id }
     })
     .then(Ticket.update(
-        { 
-            project: req.body.title 
-        },
+        { project: req.body.title },
         {
             where: { projectId: req.params.id }
         }
     ))
-    .then(ProjectUser.update({
-            project: req.body.title
-        },
+    .then(ProjectUser.update(
+        { project: req.body.title },
         {
             where: { projectID: req.params.id }
         }
@@ -93,7 +89,8 @@ router.put('/updateAndRemoveUser/:id', (req, res) => Project.update(
     {
         where: { id: req.params.id }
     })
-    .then(Ticket.update({ project: req.body.title }, 
+    .then(Ticket.update(
+        { project: req.body.title }, 
         {
             where: { projectId: req.params.id }
         }

@@ -45,12 +45,9 @@ router.post('/create', (req, res) => {
         type: req.body.type,
         submitter: req.body.submitter
     })
-    // .then(console.log(req.body))
+    .then(console.log(req.body))
     .then(console.log('added a new ticket successfully'))
     .then(ticket => res.json(ticket)) 
-    // .then(ticket => res.json(ticket))
-    // .then(res.redirect('/tickets'))
-    // .then(res.json('added a new ticket successfully'))
     .catch(err => console.log(err))
 });
 
