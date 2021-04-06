@@ -9,7 +9,7 @@ const ProjectUser = require('../models/ProjectUser')
 
 
 
-// Fetch all projects
+// Fetch all projects *************************************
 router.get('/', (req, res) => Project.findAll()
     .then(projects => {
         res.json(projects)
@@ -17,7 +17,7 @@ router.get('/', (req, res) => Project.findAll()
     .catch(err => console.log(err))
 );   
 
-// Fetch specific project
+// Fetch specific project ***********************************
 router.get('/:id', (req, res) => Project.findAll({
         where: { id: req.params.id }
     })
@@ -102,11 +102,21 @@ router.put('/updateAndRemoveUser/:id', (req, res) => Project.update(
         }
     })) 
     .then(console.log(req.body))
-    .then(res.json(console.log('project successfully updated and user removed')))
     .catch(err => console.log(err)) 
+    .then(res.json(console.log('project successfully updated and user removed')))
 )
 
-
+// Remove a User from a Project
+router.put('/remove-user/:id', (req, res) => ProjectUser.destroy({
+        where: {
+            projectID: req.params.id,
+            userID: req.body.userId
+        }
+    })
+    .then(console.log(req.body))
+    .catch(err => console.log(err)) 
+    .then(res.json(console.log('user successfully removed removed')))
+)
 
 // Delete a project ( CASCADE via foreign key) ********************************************************
 router.post('/delete/:id', (req, res) => Project.destroy({

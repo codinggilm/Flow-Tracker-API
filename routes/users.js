@@ -78,6 +78,7 @@ router.post('/register', (req, res) => {
 router.post('/assign-project', (req, res) => ProjectUser.create({
         userID: req.body.userId,
         username: req.body.username,
+        role: req.body.role,
         projectID: req.body.projectId,
         project: req.body.project 
     })
