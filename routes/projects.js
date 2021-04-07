@@ -46,6 +46,7 @@ router.post('/createWithUser', (req, res) => Project.create({
     .then(project => ProjectUser.create({
         userID: req.body.userId,
         username: req.body.userAdded,
+        role: req.body.role,
         projectID: project.id,
         project: project.title 
     }))
