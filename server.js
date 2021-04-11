@@ -37,13 +37,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport_config')(passport);
 
-
+//**************************************************************** */
  
 // Database
 const db = require('./config/database');
 
  
-// Testing Connection
+// Confirming Connection
 db.authenticate()
 .then(() => console.log('connected to database..'))
 .catch(err => console.log('there is an error:' + err))
@@ -57,9 +57,15 @@ app.use(cors({
 }));
 
 
+// Project routes
+app.use('/projects', require('./routes/projects'));
+app.use('/tickets', require('./routes/tickets'));
+app.use('/users', require('./routes/users'));
+app.use('/comments', require('./routes/comments'));
+
 app.get('/', (req, res) => {
     res.send('index');
-})
+});
 
 app.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
@@ -67,23 +73,20 @@ app.post('/login', (req, res, next) => {
         if(!user) res.json('wrong credentials');
         else {
             req.logIn(user, err => {
-                // if(err) res.status(400).json('wrong credentials');
+                if(err) res.status(400).json('wrong credentials');
                 res.json(user);
                 console.log('Successfully Authenticated');
             })
         }
     })(req, res, next);
-})
- 
+});
 
-// Project routes
-app.use('/projects', require('./routes/projects'))
-app.use('/tickets', require('./routes/tickets'))
-app.use('/users', require('./routes/users'))
-app.use('/comments', require('./routes/comments'))
-
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
 
 
 server.listen(process.env.PORT || 3000, () => {
     console.log("server is running on port 3000")
-})
+});

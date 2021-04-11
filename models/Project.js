@@ -7,6 +7,12 @@ const Project = db.define('project', {
     },
     description: {
         type: Sequelize.STRING
+    },
+    company: {
+        type: Sequelize.STRING
+    },
+    companyId: {
+        type: Sequelize.STRING
     }
 });
 

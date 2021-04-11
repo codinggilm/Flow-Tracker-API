@@ -6,26 +6,31 @@ const Comment = require('../models/Comment');
 const TicketHistory = require('../models/TicketHistory');
  
 
-// Fetch all tickets
-router.get('/', (req, res) => Ticket.findAll()
-    .then(tickets => {
-        // console.log(tickets)
-        res.json(tickets)
+// Fetch all tickets of the company
+// router.get('/', (req, res) => Ticket.findAll()
+
+//     .then(tickets => res.json(tickets))
+//     .catch(err => console.log(err))
+// );
+
+router.get('/all/:companyId', (req, res) => Ticket.findAll({
+        where: {
+            companyId: req.params.companyId
+        }
     })
+    .then(tickets => res.json(tickets))
+    .then(console.log(req.params))
     .catch(err => console.log(err))
 );
  
 
 // Fetch one ticket  *************************************************
-// router.post('/', (req, res) => Ticket.findAll({
 router.get('/:id', (req, res) => Ticket.findAll({
         where: {
             id: req.params.id
         }
     })  
-    .then(ticket => {
-        res.json(ticket)
-    })
+    .then(ticket => res.json(ticket))
     .catch(err => console.log(err))
 );
 

@@ -16,6 +16,12 @@ const ProjectUser = db.define('projectUser', {
     },
     role: {
         type: Sequelize.STRING
+    },
+    company: {
+        type: Sequelize.STRING
+    },
+    companyId: {
+        type: Sequelize.INTEGER
     }
 });
 

@@ -31,6 +31,9 @@ const Ticket = db.define('ticket', {
     },
     submitter: {
         type: Sequelize.STRING
+    },
+    companyId: {
+        type: Sequelize.INTEGER
     }
 })
 

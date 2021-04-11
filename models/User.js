@@ -5,6 +5,9 @@ const User = db.define('user', {
     company: {
         type: Sequelize.STRING
     },
+    companyId: {
+        type: Sequelize.STRING
+    },
     username: {
         type: Sequelize.STRING
     },

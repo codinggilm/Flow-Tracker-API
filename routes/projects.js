@@ -10,12 +10,22 @@ const ProjectUser = require('../models/ProjectUser')
 
 
 // Fetch all projects *************************************
-router.get('/', (req, res) => Project.findAll()
-    .then(projects => {
-        res.json(projects)
+router.get('/all/:companyId', (req, res) => Project.findAll({
+        where: { companyId: req.params.companyId }
     })
+    .then(projects => res.json(projects))
     .catch(err => console.log(err))
-);   
+);
+
+// Fetch all Projects of a specific User *******************
+router.get('/user/:userId', (req, res) => {
+    
+    ProjectUser.findAll({
+        where: { userID: req.params.userId }
+    })
+    .then(project => res.json(project))
+    .catch(err => console.log(err))
+});   
 
 // Fetch specific project ***********************************
 router.get('/:id', (req, res) => Project.findAll({
@@ -30,7 +40,9 @@ router.get('/:id', (req, res) => Project.findAll({
 router.post('/create', (req, res) => Project.create(
     {
         title: req.body.title,
-        description: req.body.description
+        description: req.body.description,
+        company: req.body.company,
+        companyId: req.body.companyId
     })
     // .then(project => console.log(project))
     .then(console.log(req.body))
@@ -41,16 +53,20 @@ router.post('/create', (req, res) => Project.create(
 // Create a project and assign a user  *************************************************
 router.post('/createWithUser', (req, res) => Project.create({
         title: req.body.title,
-        description: req.body.description
+        description: req.body.description,
+        company: req.body.company,
+        companyId: req.body.companyId
     })
     .then(project => ProjectUser.create({
         userID: req.body.userId,
         username: req.body.userAdded,
         role: req.body.role,
         projectID: project.id,
-        project: project.title 
+        project: project.title,
+        company: req.body.company,
+        companyId: req.body.companyId 
     }))
-    .then(console.log(req.body.data))
+    .then(console.log(req.body))
     .then(res.json('added a new project successfully'))
     .catch(err => console.log(err))
 );
