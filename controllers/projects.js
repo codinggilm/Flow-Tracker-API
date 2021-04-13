@@ -129,7 +129,7 @@ const deleteProject = (req, res, Project) => {
         where: { id: req.params.id }
     })
     
-    .then(console.log(req.body.data))
+    .then(console.log(req.body))
     .then(res.json(console.log('project and all associated tickets have been successfully deleted')))
     .catch(err => console.log(err))
 };

@@ -4,21 +4,10 @@ const bcrypt = require('bcryptjs');
 
 
 
-
-
-
-
 module.exports = function(passport) {
-	// passport.use('local-signup', new LocalStrategy(
+
 	passport.use( 'local', new LocalStrategy( (username, password, done) => {
-	// passport.use( 'local', new LocalStrategy(
-		// {
-		// 	usernameField: 'username',
-		// 	passwordField: 'password',
-		// 	passReqToCallback: true // allows us to pass back the entire request to the callback
-	 
-		// },
-		
+
 		User.findOne({
 			where: {
 				// email: req.body.email
@@ -28,18 +17,15 @@ module.exports = function(passport) {
 		})
 		.then( user => { 
 			if (!user) {
-				// console.log('There is no such user in our database')
 				return done(null, false, { message: 'Incorrect username.' });
 			}
 
 			if (bcrypt.compareSync(password, user.dataValues.password) && username === user.dataValues.username) {
-				// console.log('success!')
 				return done(null, user);
 			} else {
 				console.log('nu huh')
 				return done(null, false, { message: 'Incorrect password.' })
 			}
-		
 		
 		})
 

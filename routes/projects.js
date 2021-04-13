@@ -17,8 +17,10 @@ router.get('/all/:companyId', (req, res) => projects.fetchAllProjects(req, res, 
 // Fetch all Projects of a specific User 
 router.get('/user/:userId', (req, res) => projects.fetchUserProjects(req, res, ProjectUser));   
 
+
 // Fetch specific project 
 router.get('/:id', (req, res) => projects.fetchProject(req, res, Project));
+
 
 // Create a project  
 router.post('/create', (req, res) => projects.createProject(req, res, Project));
