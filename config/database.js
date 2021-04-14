@@ -13,6 +13,9 @@ module.exports = new Sequelize('dlgd7vjafs6qr', 'zgqltsnvzskwhm', 'c2bb4b6b4160a
     dialect: 'postgres',
     port: '5432',
     dialectOptions: {
-        "ssl": {"require":true }
+        "ssl": {
+            "require":true, 
+            rejectUnauthorized: false
+        }
     }
 })
