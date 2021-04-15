@@ -8,8 +8,8 @@ const { Sequelize } = require('sequelize');
 //     dialect: 'postgres'
 // })
 
-module.exports = new Sequelize('dlgd7vjafs6qr', 'zgqltsnvzskwhm', 'c2bb4b6b4160af61d79e5d86df7228424cf2ff7b10a9775829302ce599eec6fd', {
-    host: 'ec2-34-225-167-77.compute-1.amazonaws.com',
+module.exports = new Sequelize('db6ghsrh94fc1b', 'qshcgisolwmurs', '8b4130bea712a7cfe7eeba3c045a2d7ad16e174d943861aaf39fe0c3966e0597', {
+    host: 'ec2-54-220-53-223.eu-west-1.compute.amazonaws.com',
     dialect: 'postgres',
     port: '5432',
     dialectOptions: {
