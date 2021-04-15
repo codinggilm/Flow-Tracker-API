@@ -48,7 +48,6 @@ db.authenticate()
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:3001",
-    // origin: process.env.PORT,
     methods: ["GET", "POST", "PUT"],
     credentials: true
 }));

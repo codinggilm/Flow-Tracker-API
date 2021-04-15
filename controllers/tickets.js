@@ -126,7 +126,8 @@ const deleteTicket = (req, res, Ticket) => {
         where: { id: req.params.id } 
     })
     .then(console.log(req.params))
-    .then(res.json(console.log('ticket has been successfully deleted')))
+    .then(console.log('ticket has been successfully deleted'))
+    .then(res.json('success'))
     .catch(err => console.log(err)) 
 }
 
