@@ -21,16 +21,15 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 
 // Middleware
-app.use(session({
-    // secret: process.env.SESSION_SECRET,
-    secret: 'secretcode',
-    resave: false,
-    saveUninitialized: true
-}))
+// app.use(session({
+//     secret: 'secretcode',
+//     resave: false,
+//     saveUninitialized: true
+// }))
 
 app.use(cookieParser('secretcode'));
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 require('./config/passport_config')(passport);
 
 //**************************************************************** */
